@@ -14,8 +14,8 @@ public class Sprint {
         storyIds.add(story.getId());
     }
 
-    public void removeStory(String storyId) {
-        storyIds.remove(storyId);
+    public boolean removeStory(String storyId) {
+        return storyIds.remove(storyId);
     }
 
     public Set<String> getStoryIds() {

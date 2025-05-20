@@ -4,7 +4,6 @@ import com.ticketmanagement.enums.Status;
 import com.ticketmanagement.enums.TicketType;
 import com.ticketmanagement.model.SubTask;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-@Builder
 public class Ticket {
 
     protected final String id;

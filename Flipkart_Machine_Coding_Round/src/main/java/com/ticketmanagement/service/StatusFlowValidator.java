@@ -14,8 +14,10 @@ public class StatusFlowValidator {
     public StatusFlowValidator() {
         Map<Status, List<Status>> storyFlow = new HashMap<>();
         storyFlow.put(Status.OPEN, List.of(Status.IN_PROGRESS));
-        storyFlow.put(Status.IN_PROGRESS, List.of(Status.COMPLETED));
-        storyFlow.put(Status.COMPLETED, List.of());
+        storyFlow.put(Status.IN_PROGRESS, List.of(Status.TESTING));
+        storyFlow.put(Status.TESTING, List.of(Status.IN_REVIEW));
+        storyFlow.put(Status.IN_REVIEW, List.of(Status.DEPLOYED));
+        storyFlow.put(Status.DEPLOYED, List.of());
 
         Map<Status, List<Status>> epicFlow = new HashMap<>();
         epicFlow.put(Status.OPEN, List.of(Status.IN_PROGRESS));
@@ -23,8 +25,9 @@ public class StatusFlowValidator {
         epicFlow.put(Status.COMPLETED, List.of());
 
         Map<Status, List<Status>> onCallFlow = new HashMap<>();
-        onCallFlow.put(Status.OPEN, List.of(Status.COMPLETED));
-        onCallFlow.put(Status.COMPLETED, List.of());
+        onCallFlow.put(Status.OPEN, List.of(Status.IN_PROGRESS));
+        onCallFlow.put(Status.IN_PROGRESS, List.of(Status.RESOLVED));
+        onCallFlow.put(Status.RESOLVED, List.of());
 
         flowMap.put(TicketType.STORY, storyFlow);
         flowMap.put(TicketType.EPIC, epicFlow);

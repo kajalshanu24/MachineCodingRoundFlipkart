@@ -54,28 +54,29 @@ public class TicketManagementSystem {
                         String id = sc.nextLine();
                         System.out.print("Enter New Status: ");
                         Status status = Status.valueOf(sc.nextLine().toUpperCase());
-                        manager.updateTicketStatus(id, status);
-                        System.out.println("Status updated to "+status);
+                        boolean isUpdateTicketStatus = manager.updateTicketStatus(id, status);
+                        String updatedTicketStatus = isUpdateTicketStatus ? "Status updated to " + status : "Please provide valid status to be updated.";
+                        System.out.println(updatedTicketStatus);
                     }
                     case 4 -> {
                         System.out.print("Enter SubTask ID: ");
                         String id = sc.nextLine();
                         System.out.print("Enter New Status: ");
                         Status status = Status.valueOf(sc.nextLine().toUpperCase());
-                        manager.updateSubTaskStatus(id, status);
-                        System.out.println("Subtask Status Updated Successfully!!");
+                        String updatedTicketStatus = manager.updateSubTaskStatus(id, status) ? "Status updated to " + status : "Please provide valid status to be updated.";
+                        System.out.println(updatedTicketStatus);
                     }
                     case 5 -> {
                         System.out.print("Enter Story Ticket ID: ");
                         String id = sc.nextLine();
                         manager.addToSprint(id);
-                        System.out.println("Story added to sprint Successfully!!");
+                        System.out.println("Story added to sprint successfully!!");
                     }
                     case 6 -> {
                         System.out.print("Enter Story Ticket ID to remove: ");
                         String id = sc.nextLine();
-                        manager.removeFromSprint(id);
-                        System.out.println("Removed from sprint Successfully!!");
+                        String removedFromSprint = manager.removeFromSprint(id) ? "Removed from sprint successfully!!" : "Please provide valid ticket ID to remove.";
+                        System.out.println(removedFromSprint);
                     }
                     case 7 -> {
                         System.out.println("Sprint Stories: " + manager.getSprintStoryIds());

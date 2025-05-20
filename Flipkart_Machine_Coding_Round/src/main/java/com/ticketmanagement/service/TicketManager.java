@@ -15,23 +15,25 @@ public class TicketManager {
     private final Sprint sprint = new Sprint();
     private final StatusFlowValidator validator = new StatusFlowValidator();
 
-    public Ticket createTicket(String id, String title, TicketType type) {
+    public void createTicket(String id, String title, TicketType type) {
         Ticket ticket = switch (type) {
             case STORY -> new Story(id, title);
             case EPIC -> new Epic(id, title);
             case ON_CALL -> new OnCall(id, title);
         };
         tickets.put(id, ticket);
-        return ticket;
+        //return ticket;
     }
 
-    public void updateTicketStatus(String id, Status newStatus) {
-        Ticket t = tickets.get(id);
-        if (t != null && validator.isValidTransition(t.getType(), t.getStatus(), newStatus)) {
-            if (t instanceof Story && !t.allSubTasksCompleted())
+    public boolean updateTicketStatus(String id, Status newStatus) {
+        Ticket ticket = tickets.get(id);
+        if (ticket != null && validator.isValidTransition(ticket.getType(), ticket.getStatus(), newStatus)) {
+            if (ticket instanceof Story && !ticket.allSubTasksCompleted())
                 throw new IllegalStateException("Cannot close story with incomplete subtasks");
-            t.updateStatus(newStatus);
+            ticket.updateStatus(newStatus);
+            return true;
         }
+        return false;
     }
 
     public void addToSprint(String ticketId) {
@@ -40,8 +42,8 @@ public class TicketManager {
         else throw new IllegalArgumentException("Only stories allowed in sprint");
     }
 
-    public void removeFromSprint(String ticketId) {
-        sprint.removeStory(ticketId);
+    public boolean removeFromSprint(String ticketId) {
+        return sprint.removeStory(ticketId);
     }
 
     public List<String> getSprintStoryIds() {
@@ -61,9 +63,13 @@ public class TicketManager {
         subTasks.remove(subTaskId);
     }
 
-    public void updateSubTaskStatus(String subTaskId, Status newStatus) {
+    public boolean updateSubTaskStatus(String subTaskId, Status newStatus) {
         SubTask st = subTasks.get(subTaskId);
-        if (st != null) st.updateStatus(newStatus);
+        if (st != null && validator.isValidTransition(TicketType.STORY, st.getStatus(), newStatus)) {
+            st.updateStatus(newStatus);
+            return true;
+        }
+        return false;
     }
 
     public Ticket getTicket(String id) {
